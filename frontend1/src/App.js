@@ -7,22 +7,7 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
-       {/* style={{ 
-        // backgroundImage: `url(${bg})`,
-        <img src>
-        minHeight: "100vh",
-        display: "flex",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat"
-      }} */}
-      {/* <img
-        src={bg}
-        alt="background"
-        background-size:cover
-        background-position:center
-        background-repeat:no-repeat
-      ></img> */}
+       
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/chats" element={<ChatsPage />} />

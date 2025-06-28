@@ -19,7 +19,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [pics, setPics] = useState("");
+  const [pic, setPic] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -29,12 +29,12 @@ const Signup = () => {
   const handleClick1 = () => setShow1(!show1);
 
   
-  const postDetail = (pics) => {
+  const postDetail = (pic) => {
     console.log("postDetail function triggered"); // ✅ Step 1: Check if function runs
 
     setLoading(true);
 
-    if (pics === undefined) {
+    if (pic === undefined) {
       console.log("No image selected!"); // ✅ Step 2: Confirm if this condition is met
 
       toast({
@@ -49,11 +49,11 @@ const Signup = () => {
       return;
     }
 
-    console.log("Image received:", pics); // ✅ Step 3: Confirm image is received
+    console.log("Image received:", pic); // ✅ Step 3: Confirm image is received
 
-    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+    if (pic.type === "image/jpeg" || pic.type === "image/png") {
       const data = new FormData();
-      data.append("file", pics);
+      data.append("file", pic);
       data.append("upload_preset", "chatApp");
       data.append("cloud_name", "chat-APP11");
 
@@ -64,7 +64,7 @@ const Signup = () => {
         .then((res) => res.json())
         .then((data) => {
           if (data && data.url.toString()) {
-            setPics(data.url.toString());
+            setPic(data.url.toString());
             toast({
               title: "Image uploaded successfully.",
               status: "success",
@@ -140,7 +140,7 @@ const Signup = () => {
       };
       const { data } = await axios.post(
         "/api/user",
-        { name, email, password, pics },
+        { name, email, password, pic },
         config
       );
       toast({
@@ -155,8 +155,6 @@ const Signup = () => {
     
 
       setLoading(false);
-
-      // history.push("/chats");
       
       navigate("/chats");
     } catch (error) {

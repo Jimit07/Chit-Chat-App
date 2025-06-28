@@ -18,6 +18,7 @@ import {
   Input,
   useToast,
   Spinner,
+  Badge,
 } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatState } from "../Context/ChatProvider";
@@ -27,8 +28,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import axios from "axios";
 import ChatLoading from "../components/ChatLoading";
 import UserListItem from "../UserAvatar/UserListItem";
-
-
+import { getSender } from "../config/ChatLogics";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("");
@@ -43,7 +43,14 @@ const SideDrawer = () => {
     navigate("/");
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { user, setSelectedChat, chats, setChats } = ChatState();
+  const {
+    user,
+    setSelectedChat,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = ChatState();
 
   const toast = useToast();
   if (!user) return null; // ✅ ADD THIS LINE
@@ -60,7 +67,6 @@ const SideDrawer = () => {
     }
     try {
       setLoading(true);
-
 
       if (!user || !user.tokens) {
         throw new Error("User not authenticated");
@@ -99,7 +105,7 @@ const SideDrawer = () => {
         },
       };
 
-      const { data } = await axios.post("/api/chat",{ userId }, config);
+      const { data } = await axios.post("/api/chat", { userId }, config);
 
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
 
@@ -118,8 +124,6 @@ const SideDrawer = () => {
         isClosable: true,
       });
     }
-
-   
   };
   return (
     <>
@@ -147,14 +151,42 @@ const SideDrawer = () => {
         </Tooltip>
 
         <Text fontSize="2xl" fontFamily="Work-sans">
-          Talk-A-Tive
+          Chit-Chat App
         </Text>
         <div>
           <Menu>
-            <MenuButton p="1px">
+            <MenuButton p="1px" position="relative">
               <BellIcon fontSize="2xl" m={1} />
+              {notification.length > 0 && (
+                <Badge
+                  position="absolute"
+                  top="0"
+                  right="0"
+                  colorScheme="red"
+                  borderRadius="full"
+                  px={2}
+                  fontSize="0.8em"
+                >
+                  {notification.length}
+                </Badge>
+              )}
             </MenuButton>
-            {/* <MenuList></MenuList>  */}
+            <MenuList pl={2}>
+              {!notification.length && "No New Messages"}
+              {notification.map((notif) => (
+                <MenuItem
+                  key={notif._id}
+                  onClick={() => {
+                    setSelectedChat(notif.chat);
+                    setNotification(notification.filter((n) => n !== notif));
+                  }}
+                >
+                  {notif.chat.isGroupChat
+                    ? `New Message in ${notif.chat.chatName}`
+                    : `New Message from ${getSender(user, notif.chat.users)}`}
+                </MenuItem>
+              ))}
+            </MenuList>
           </Menu>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
@@ -189,7 +221,7 @@ const SideDrawer = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               ></Input>
-              
+
               <Button onClick={handleSearch}>Go</Button>
             </Box>
             {loading ? (

@@ -27,7 +27,7 @@ const GroupChatModel = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [groupChatName, setGroupChatName] = useState();
-  const [selectedUser, setSelectedUser] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [search, setSearch] = useState();
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -49,7 +49,7 @@ const GroupChatModel = ({ children }) => {
         },
       };
       const { data } = await axios.get(`/api/user?search=${search}`, config);
-      console.log(data);
+      // console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -63,7 +63,7 @@ const GroupChatModel = ({ children }) => {
     }
   };
   const handleSubmit = async() => {
-    if(!groupChatName || !selectedUser){
+    if(!groupChatName || !selectedUsers){
       toast({
         title:"Please fill all the fields",
         status:"warning",
@@ -77,14 +77,14 @@ const GroupChatModel = ({ children }) => {
 
     try{
       const config={
-        header:{
+        headers:{
           Authorization:`Bearer ${user.tokens}`
         }
       }
 
       const {data}= await axios.post("/api/chat/group",{
         name:groupChatName,
-        user:JSON.stringify(selectedUser.map((u)=>u._id)),
+        users:JSON.stringify(selectedUsers.map((u)=>u._id)),
       } ,
        config
       );
@@ -114,10 +114,10 @@ const GroupChatModel = ({ children }) => {
   
 
   const handleDelete = (delUser) => {
-    setSelectedUser(selectedUser.filter((select)=>select._id !== delUser._id))
+    setSelectedUsers(selectedUsers.filter((select)=>select._id !== delUser._id))
   };
   const handleGroup = (userToAdd) => {
-    if (selectedUser.includes(userToAdd)) {
+    if (selectedUsers.includes(userToAdd)) {
       toast({
         title: "User already added",
         status: "warning",
@@ -127,7 +127,7 @@ const GroupChatModel = ({ children }) => {
       });
       return;
     }
-    setSelectedUser([...selectedUser, userToAdd]);
+    setSelectedUsers([...selectedUsers, userToAdd]);
   };
 
   return (
@@ -137,7 +137,7 @@ const GroupChatModel = ({ children }) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader
-            fontSize="30px"
+            fontSize="35px"
             fontFamily="work-sans"
             display="flex"
             justifyContent="center"
@@ -164,7 +164,7 @@ const GroupChatModel = ({ children }) => {
 
             {/* selected user */}
             <Box w="100%" display="flex" flexWrap="wrap">
-              {selectedUser.map((u) => (
+              {selectedUsers.map((u) => (
                 <UserBadgeItem
                   key={u._id}
                   user={u}

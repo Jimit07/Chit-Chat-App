@@ -9,7 +9,7 @@ import ChatLoading from "../components/ChatLoading";
 import {} from "../config/ChatLogics";
 import { getSender } from "../config/ChatLogics";
 import GroupChatModel from "./GroupChatModel";
-const MyChat = () => {
+const MyChat = ({fetchAgain}) => {
   const [loggedUser, setLoggedUser] = useState();
   const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
 
@@ -40,7 +40,7 @@ const MyChat = () => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <Box
@@ -98,7 +98,7 @@ const MyChat = () => {
               >
                 <Text>
                   {!chat.isGroupChat
-                    ? getSender(loggedUser, chat.users)
+                    ? (loggedUser &&getSender(loggedUser, chat.users))
                     : chat.chatName}
                 </Text>
               </Box>

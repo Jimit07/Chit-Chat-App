@@ -1,2 +1,0 @@
-problem in fetching allusers authmiddlerware cannot get all users leaving loged in user
- "mesage": "Not authorized, token failed", in search user
