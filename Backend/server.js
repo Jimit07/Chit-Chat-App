@@ -83,50 +83,7 @@ const server = app.listen(
   PORT,
   console.log(`Server running at port ${PORT}`.yellow.bold)
 );
-
-// const io = require("socket.io")(server, {
-//   pingTimeout: 60000,
-//   cors: {
-//     origin: "http://localhost:3000", // use http not https unless you have SSL
-//     credentials: true,
-//   },
-// });
-
-// io.on("connection", (socket) => {
-//   console.log("Connected to socket.io");
-
-//   socket.on("setup", (userData) => {
-//     socket.join(userData._id);
-//     console.log("User joined setup with ID:", userData._id);
-//     socket.emit("connected");
-//   });
-
-
-//    socket.on("join chat" , (room)=>{
-//     socket.join(room);
-//     console.log("User joined room:", room );
-//    } );
-
-// //   // Optional: handle disconnection
-// //   socket.on("disconnect", () => {
-// //     console.log("User disconnected");
-// //   });
-// });
-
-// socket.on("new message" , (newMessageReceived)=>{
-//   var chat =newMessageReceived.chat;
-
-//   if(!chat.users)return console.log("chat.users not defined");
-
-//   chat.users.array.forEach(user => {
-//     if(user._id === newMessageReceived.sender._id)return;
-
-//     socket.in(user._id).emit("message received", newMessageReceived);
-
-    
-//   });
-// });
-
+// socket.io code
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
