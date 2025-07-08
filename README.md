@@ -2,6 +2,10 @@
 
 A real-time chat application built using the **MERN stack (MongoDB, Express, React, Node.js)** with **Socket.io** for instant messaging and **Chakra UI** for modern UI components.
 
+
+# live link to visit my Chit-Chat-App---
+https://chit-chat-app-se7q.onrender.com
+
 ## 🚀 Features
 
 - User registration and login with JWT authentication
@@ -30,3 +34,5 @@ A real-time chat application built using the **MERN stack (MongoDB, Express, Rea
 ```bash
 git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
 cd YOUR_REPO_NAME
+
+
